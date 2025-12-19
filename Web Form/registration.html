@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Registration Form</h2>
+        <form id="registrationForm" onsubmit="return validateForm()">
+
+            <div class="form-group">
+                <label for="name">Full Name <span>*</span></label>
+                <input type="text" id="name" placeholder="Enter Full Name" required />
+            </div>
+
+
+            <div class="form-group">
+                <label for="name">Father Name <span>*</span></label>
+                <input type="text" id="name" placeholder="Enter Father Name" required />
+            </div>
+
+            <div class="form-group">
+                <label for="name">Mother Name <span>*</span></label>
+                <input type="text" id="name" placeholder="Enter Mother Name" required />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email <span>*</span></label>
+                <input type="email" id="email" placeholder="Enter Valid Email" required />
+                <div class="error" id="emailError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="primaryPhone">Phone Number <span>*</span></label>
+                <input type="tel" id="primaryPhone" maxlength="10" placeholder="Enter Primary Phone Number" required />
+                <div class="error" id="primaryPhoneError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="alternatePhone">Alternate Number <span>*</span></label>
+                <input type="tel" id="alternatePhone" maxlength="10" placeholder="Enter Alternate Phone Number"
+                    required />
+                <div class="error" id="alternatePhoneError"></div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="dob">Date of Birth <span>*</span></label>
+                <input type="date" id="dob" required />
+                <div class="error" id="dobError"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Gender <span>*</span></label>
+                <div class="gender-options">
+                    <label><input type="radio" id="male" name="gender" value="Male" checked /> Male</label>
+                    <label><input type="radio" id="female" name="gender" value="Female" /> Female</label>
+                    <label><input type="radio" id="other" name="gender" value="Other" /> Other</label>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="form-group">
+                <label for="username">Username <span>*</span></label>
+                <input type="text" id="username" placeholder="Enter Username" required />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password <span>*</span></label>
+                <input type="password" id="password" placeholder="Enter Password" required />
+                <div class="error" id="passwordError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password <span>*</span></label>
+                <input type="password" id="confirmPassword" placeholder="Re-enter Password" required />
+                <div class="error" id="confirmError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="country">Country <span>*</span></label>
+                <select id="country" required>
+                    <option value="" disabled selected>--Select your country--</option>
+                    <option value="India">India</option>
+                    <option value="United States">United States</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Germany">Germany</option>
+                    <option value="France">France</option>
+                    <option value="Japan">Japan</option>
+                    <option value="China">China</option>
+                    <option value="Brazil">Brazil</option>
+                    <!-- Add more countries as needed -->
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="state">State <span>*</span></label>
+                <select id="state" required>
+                    <option value="" disabled selected>--Select your state--</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                    <option value="Chandigarh">Chandigarh</option>
+                    <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu
+                    </option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                    <option value="Ladakh">Ladakh</option>
+                    <option value="Lakshadweep">Lakshadweep</option>
+                    <option value="Puducherry">Puducherry</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="city">District <span>*</span></label>
+                <input type="text" id="city" placeholder="Enter District" required />
+            </div>
+
+            <div class="form-group address-wide">
+                <label for="address1">Address <span>*</span></label>
+                <input type="text" id="address1" placeholder="Enter full address" required />
+            </div>
+
+            <div class="form-group">
+                <label for="zip">Pincode <span>*</span></label>
+                <input type="text" id="zip" placeholder="Enter Pin code" required />
+            </div>
+
+            <br>
+            <div class="img-group">
+                <div class="form-group img-prev">
+                    <img id="preview" class="image-preview">
+                </div>
+                <div class="form-group ">
+                    <label for="profilePic">Upload Profile Picture <span>*</span></label>
+                    <input type="file" id="profilePic" name="profilePic" required>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit">Register</button>
+                <button type="reset">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function sanitizeInput(value) {
+            return value
+                .replace(/[^\x00-\x7F]/g, '')
+                .replace(/[^a-zA-Z0-9\s,'-]/g, '')
+                .replace(/\s{2,}/g, ' ')
+                .trimStart();
+        }
+
+        document.getElementById("profilePic").addEventListener("change", function () {
+            const file = this.files[0];
+            const preview = document.getElementById("preview");
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("name").addEventListener("input", function () {
+            this.value = this.value
+                .replace(/[^a-zA-Z\s,'-]/g, '')
+                .replace(/\s{2,}/g, ' ')
+                .trimStart();
+
+            // Capitalize each word
+            const words = this.value
+                .split(" ")
+                .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+            this.value = words.join(" ");
+        });
+
+
+        document.getElementById("username").addEventListener("input", function () {
+            this.value = this.value.replace(/\s/g, ""); // Remove spaces immediately
+            const value = this.value;
+            const specialChars = (value.match(/[!@#$%^&<span>*</span>]/g) || []);
+            const isValid =
+                /^[a-zA-Z0-9!@#$%^&<span>*</span>]+$/.test(value) &&  // Only allow valid characters
+                specialChars.length <= 1;               // Only 1 special character allowed
+
+            this.setCustomValidity(isValid ? "" : "Only one special character allowed (!@#$%^&<span>*</span>), no spaces allowed.");
+        });
+
+        document.getElementById("email").addEventListener("input", function () {
+            const pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            document.getElementById("emailError").textContent = pattern.test(this.value) ? "" : "Invalid email format.";
+        });
+
+        function validatePhoneMatch() {
+            const primary = document.getElementById("primaryPhone").value;
+            const alternate = document.getElementById("alternatePhone").value;
+            const errorDiv = document.getElementById("phoneMatchError");
+
+            if (primary && alternate && primary === alternate) {
+                errorDiv.textContent = "Primary and alternate phone numbers must be different.";
+            } else {
+                errorDiv.textContent = "";
+            }
+        }
+
+        ["primaryPhone", "alternatePhone"].forEach(id => {
+            document.getElementById(id).addEventListener("input", function () {
+                // Restrict to digits, not starting with 0, max 10 digits
+                let digits = this.value.replace(/\D/g, '');
+                if (digits.startsWith("0")) digits = digits.slice(1);
+                if (digits.length > 10) digits = digits.slice(0, 10);
+                this.value = digits;
+
+                // Validate difference
+                validatePhoneMatch();
+            });
+        });
+
+
+        document.getElementById("password").addEventListener("input", function () {
+            document.getElementById("passwordError").textContent = this.value.length < 8 ? "Password must be at least 8 characters." : "";
+        });
+
+        document.getElementById("confirmPassword").addEventListener("input", function () {
+            document.getElementById("confirmError").textContent = this.value !== document.getElementById("password").value ? "Passwords do not match." : "";
+        });
+
+        document.getElementById("dob").addEventListener("change", function () {
+            const [y, m, d] = this.value.split("-").map(Number);
+            const date = new Date(y, m - 1, d);
+            const valid = date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d;
+            document.getElementById("dobError").textContent = valid ? "" : "Invalid date selected.";
+            if (!valid) this.value = "";
+        });
+
+        ["country", "state", "city", "address1"].forEach(id => {
+            document.getElementById(id).addEventListener("input", function () {
+                this.value = sanitizeInput(this.value);
+                this.setCustomValidity(this.value.length < 3 ? "Minimum 3 characters required." : "");
+            });
+        });
+
+        document.getElementById("zip").addEventListener("input", function () {
+            let digits = this.value.replace(/\D/g, '');
+
+            if (digits.length > 6) {
+                digits = digits.slice(0, 6);
+            }
+
+            this.value = digits;
+
+            this.setCustomValidity(digits.length === 6 ? "" : "Pincode must be exactly 6 digits.");
+        });
+
+
+
+        function validateForm() {
+            const gender = document.querySelector('input[name="gender"]:checked');
+            if (!gender) {
+                alert("Please select gender.");
+                return false;
+            }
+            return true;
+        }
+
+        document.getElementById("city").addEventListener("input", function () {
+            this.value = this.value
+                .replace(/[0-9]/g, '')
+                .replace(/\s{2,}/g, ' ')
+                .trimStart();
+
+            const words = this.value.split(" ")
+                .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+            this.value = words.join(" ");
+        });
+
+    </script>
+</body>
+
+</html>

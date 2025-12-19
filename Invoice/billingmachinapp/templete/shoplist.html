@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block extracss %}
+<style>
+  body {
+      background-color: #f4f7fc;
+  }
+  .table-container {
+      max-width: 90%;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .table .table-striped.th
+    {
+      background: #343a40 !important;
+      color: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* Box shadow added */
+  }
+  .out-of-stock {
+      color: red;
+      font-weight: bold;
+  }
+  .in-stock {
+      color: green;
+      font-weight: bold;
+  }
+  .btn-add {
+      float: right;
+      margin-top: -5%;
+      margin-bottom: 7rem;
+  }
+  .action-buttons button {
+      margin: 3px;
+  }
+  .pagination>li>a { border-radius: 50% !important;margin: 0 5px;}
+</style>
+{% endblock extracss %}
+
+  {% block content %}
+    <!-- product section start -->
+    <div class="container table-container" style=" margin-top: 7rem; scale: 0.90; padding: 15px !important; ">
+      <h2 class="text-center mb-4">Shop List</h2>
+      <a href="/shoplistform/"><button class="btn btn-primary btn-add">+ Add Shoplist</button></a>
+    <table id="example" class="table table-striped" style="width:100%; overflow-x: scroll;">
+      <thead>
+          <tr>
+              <th>S.No</th>
+              <th>Shop Name</th>
+              <th>Contact No</th>
+              <th>Owner Name</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Date</th>
+              <th colspan="2">Action</th>   
+          </tr>
+      </thead>
+    <tbody id="shop-table-body"></tbody>  
+  </table>
+  </div>
+    <!-- product section end -->
+    
+    {% endblock content %}
+
+    {% block extrajs %}
+    <!-- Datatables -->
+    <script src="{% static "js/plugin/datatables/datatables.min.js" %}"></script>
+
+    <script>
+        $(document).ready(function() {
+        $('#example').DataTable();
+      });
+    </script>
+  <script>
+    function updateshop(id){
+      window.location.href = `/shoplistupdate/${id}`
+    }
+    function fetchshop() {
+    fetch('http://192.168.1.33:8081/api/garments/shop/list/')
+    .then(response => response.json())
+    .then(data => {
+        let tbody = document.getElementById("shop-table-body");
+        tbody.innerHTML = "";
+
+        data.data.forEach((shop, index) => {
+            let row = `<tr>
+                <td>${index + 1}</td>
+                <td>${shop.shop_name}</td>
+                <td>${shop.shop_phone}</td>
+                <td>${shop.shop_owner_name}</td>
+                <td>${shop.shop_email}</td>
+                <td>${shop.shop_address}</td>
+                <td>${shop.fcreated_at}</td>
+                <td>
+                  <button class="btn btn-sm btn-warning" onclick="updateshop({shop.id})">Edit</button>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-danger">Delete</button>
+                </td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    })
+    .catch((error) => {
+      console.error('Error fetching shops', error)
+    })
+  }
+  document.addEventListener("DOMContenetLoaded",function(){
+    fetchshop();
+  })
+  </script>
+  {% endblock extrajs %}
+  

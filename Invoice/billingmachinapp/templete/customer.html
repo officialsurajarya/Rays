@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block extracss %}
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+<!-- Bootstrap JS (optional, for additional features like modals, tooltips) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<!-- Initialize DataTable -->
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- DataTables CSS -->
+<link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+
+
+    
+   
+<style>
+  body {
+      background-color: #f4f7fc;
+  }
+  .table-container {
+      max-width: 90%;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .table .table-striped.th
+    {
+      background: #343a40 !important;
+      color: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* Box shadow added */
+  }
+  .out-of-stock {
+      color: red;
+      font-weight: bold;
+  }
+  .in-stock {
+      color: green;
+      font-weight: bold;
+  }
+  .btn-add {
+      float: right;
+      margin-top: -5%;
+      margin-bottom: 7rem;
+  }
+  .action-buttons button {
+      margin: 3px;
+  }
+  .pagination>li>a { border-radius: 50% !important;margin: 0 5px;}
+</style>
+{% endblock extracss %}
+
+  {% block content %}
+    <!-- product section start -->
+    <div class="container table-container" style=" margin-top: 7rem; scale: 0.90; padding: 15px !important; ">
+        <div><a href="/home/"><button class="btn btn-primary my-4 fs-5 rounded-3"><i class="fa-solid fa-circle-left"></i> DASHBOARD</button></a></div>
+      <h2 class="text-center mb-4">Bill History</h2>
+      <!-- <a href="/customerform/"><button class="btn btn-primary btn-add">+ Add Customer</button></a> -->
+    <table id="example" class="table table-striped" style="width:100%; overflow-x: scroll;">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Cust_Name</th>
+          <th>Cont No</th>
+          <th>Total Amount</th>
+          <th>Discount Amount</th>
+          <th>Grand Total</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+
+      </thead>
+    <tbody id="shop-table-body"></tbody>  
+  </table>
+  </div>
+  {% endblock content %}
+    <!-- product section end -->
+    {% block extrajs %}
+    <script>
+      $(document).ready(function () {
+        // Fetch API data and populate DataTable
+        $.ajax({
+            url: 'http://192.168.1.33:8081/api/simple-invoice/bill/list/',
+            type: 'GET',
+            dataType: 'json',
+            headers: {
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQyOTA5MjMzLCJpYXQiOjE3NDI5MDU2MzMsImp0aSI6IjJkNTQwYTJjMzAxMDRkN2RiNWRmYWEyMGQ4NTczNjc0IiwidXNlcl9pZCI6MX0.c_c6cbccGx3_VQPfvr_q8NdnrERNcB4xE8lF7fOTuXg", // Replace with actual token
+                "Content-Type": "application/json"
+            },
+            success: function (response) {
+                if (!response.isSuccess || !Array.isArray(response.data)) {
+                    console.error("Invalid API Response:", response);
+                    return;
+                }
+    
+                // Pehle se agar DataTable initialize hai to usko destroy karo
+                if ($.fn.DataTable.isDataTable('#example')) {
+                    $('#example').DataTable().destroy();
+                }
+    
+                // Table ko empty karna zaroori hai
+                $('#example tbody').empty();
+    
+                // Initialize DataTable
+                $('#example').DataTable({
+                    data: response.data, // Use API data
+                    columns: [
+                        { data: null, render: (data, type, row, meta) => meta.row + 1 }, // S.No
+                        { data: 'cust_name' },
+                        { data: 'cust_number' },
+                        { data: 'total_amount' },
+                        { data: 'discount_amount' },
+                        { data: 'grand_amount' },
+                        { data: 'fcreated_at' },
+                        { data: null, render: (data, type, row) => 
+                            `<a href="/updateProduct/${row.id}/" <button class="btn btn-sm btn-warning">Edit</button></a> 
+                             <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}">Delete</button>` 
+                        }
+                    ],
+                    pageLength: 10, // Show 10 records per page
+                    lengthChange: true, // Enable "Show entries" dropdown
+                    searching: true, // Enable search
+                    ordering: true, // Enable sorting
+                    processing: true, // Show processing indicator
+                    responsive: true // Responsive table
+                });
+            },
+            error: function (error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+
+        $(document).on('click', '.delete-btn', function() {
+            let invoiceId = $(this).data('id'); // Get the product ID from button attribute
+            let confirmDelete = confirm("Are you sure you want to delete this product?");
+        
+            if (!confirmDelete) return;
+        
+            fetch(`http://192.168.1.33:8081/api/simple-invoice/bill/delete/${invoiceId}/`, {
+                method: 'POST',
+                headers: {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQyOTAzODQ1LCJpYXQiOjE3NDI5MDAyNDUsImp0aSI6ImZiYmU2YzYzM2FkNTQzYTdiNjRhMWZlZGQxYjM5OThlIiwidXNlcl9pZCI6MX0.aX1304VjxN9CAUObTGv0evLCxP2BG5Odd61-gUxcG3A",
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Delete Response:", data);
+                if (data.isSuccess) {
+                    alert("Product deleted successfully!");
+                    location.reload(); // Refresh page to update table
+                } else {
+                    alert("Error deleting product: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to delete product. Check console for details.");
+            });
+        });
+    });
+  </script>
+  {% endblock extrajs %}

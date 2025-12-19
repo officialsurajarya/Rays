@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Billing System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-btn {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .dashboard-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-content {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #4f46e5;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            background: linear-gradient(45deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 45px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #f9fafb;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background-color 0.2s ease;
+        }
+
+        .table tr:hover td {
+            background-color: #f3f4f6;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(107, 114, 128, 0.4);
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background: #4f46e5;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn:hover {
+            background: #3730a3;
+            transform: scale(1.1);
+        }
+
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #e5e7eb;
+            border-radius: 5px;
+        }
+
+        .unit-select {
+            padding: 5px 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .summary-section {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border-radius: 15px;
+            padding: 30px;
+            flex: 1;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #4f46e5;
+        }
+
+        .discount-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .discount-input label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .discount-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            53%,
+            80%,
+            100% {
+                transform: translate3d(0, 0, 0);
+            }
+
+            40%,
+            43% {
+                transform: translate3d(0, -30px, 0);
+            }
+
+            70% {
+                transform: translate3d(0, -15px, 0);
+            }
+
+            90% {
+                transform: translate3d(0, -4px, 0);
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .summary-section {
+                flex-direction: column;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .dashboard-btn {
+                position: static;
+                transform: none;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="#" class="dashboard-btn">
+                <i class="fas fa-arrow-left"></i>
+                DASHBOARD
+            </a>
+            <h1>Interactive Billing System</h1>
+            <p>Generate professional invoices with ease</p>
+        </div>
+
+        <div class="main-content">
+
+            <!-- Product Search Section -->
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-search"></i>
+                    Search Products
+                </div>
+                <div class="search-container">
+                    <input type="text" id="search-item" class="search-input" placeholder="Search for products...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                <div class="table-container">
+                    <table class="table" id="items-table">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Unit</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Added Items Section -->
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-shopping-cart"></i>
+                    Added Items
+                </div>
+                <div class="table-container">
+                    <table class="table" id="added-items-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity & Unit</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="empty-state">
+                                <td colspan="4">
+                                    <i class="fas fa-shopping-cart animate-bounce"></i>
+                                    <p>No items added yet</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="discount-input">
+                    <label for="discount">Discount (₹):</label>
+                    <input type="number" id="discount" placeholder="0" min="0">
+                </div>
+            </div>
+
+            <!-- Customer Details Section -->
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-user"></i>
+                    Customer Details
+                </div>
+                <div class="form-group">
+                    <label for="customer-name">Customer Name</label>
+                    <input type="text" id="customer-name" class="form-input" placeholder="Enter customer name">
+                </div>
+                <div class="form-group">
+                    <label for="customer-phone">Phone Number</label>
+                    <input type="text" id="customer-phone" class="form-input" placeholder="Enter phone number">
+                </div>
+            </div>
+
+            <!-- Summary Section -->
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-calculator"></i>
+                    Bill Summary
+                </div>
+                <div class="summary-card">
+                    <div class="summary-item">
+                        <span>Total Items:</span>
+                        <span id="total-items">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Subtotal:</span>
+                        <span>₹<span id="sub-total">0</span></span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Discount:</span>
+                        <span>₹<span id="discount-amount">0</span></span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Grand Total:</span>
+                        <span>₹<span id="grand-total">0</span></span>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="btn btn-primary" onclick="generateInvoice()">
+                        <i class="fas fa-file-invoice"></i>
+                        Generate Invoice
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Sample items data
+        const items = [
+            { id: 1, name: "Mango", unit: "1", unit_type: "kg", price: 212 },
+            { id: 2, name: "Flour", unit: "1", unit_type: "kg", price: 76 },
+            { id: 3, name: "Cloth", unit: "1", unit_type: "mt", price: 120 },
+            { id: 4, name: "Vest", unit: "1", unit_type: "pcs", price: 120 },
+            { id: 5, name: "Sprite", unit: "1", unit_type: "l", price: 40 },
+            { id: 6, name: "Rice", unit: "1", unit_type: "kg", price: 85 },
+            { id: 7, name: "Oil", unit: "1", unit_type: "l", price: 150 },
+            { id: 8, name: "Sugar", unit: "1", unit_type: "kg", price: 45 }
+        ];
+
+        let addedItems = [];
+        let filteredItems = items;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            loadItems();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('search-item').addEventListener('input', filterItems);
+            document.getElementById('discount').addEventListener('input', updateSummary);
+        }
+
+        function loadItems() {
+            const tbody = document.querySelector('#items-table tbody');
+            tbody.innerHTML = '';
+
+            filteredItems.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.unit}${item.unit_type}</td>
+                    <td>₹${item.price}</td>
+                    <td>
+                        <button class="btn btn-success" onclick="addItem(${item.id})">
+                            <i class="fas fa-plus"></i>
+                            Add
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterItems() {
+            const searchValue = document.getElementById('search-item').value.toLowerCase();
+            filteredItems = items.filter(item =>
+                item.name.toLowerCase().includes(searchValue)
+            );
+            loadItems();
+        }
+
+        function addItem(itemId) {
+            const item = items.find(i => i.id === itemId);
+            if (!item) return;
+
+            // Check if item already exists
+            const existingItem = addedItems.find(i => i.id === itemId);
+            if (existingItem) {
+                existingItem.quantity++;
+                updateAddedItemsTable();
+                showNotification('Item quantity increased!', 'success');
+                return;
+            }
+
+            // Add new item
+            addedItems.push({
+                ...item,
+                quantity: 1,
+                selectedUnit: item.unit_type,
+                unitPrice: item.price
+            });
+
+            updateAddedItemsTable();
+            showNotification('Item added successfully!', 'success');
+        }
+
+        function updateAddedItemsTable() {
+            const tbody = document.querySelector('#added-items-table tbody');
+            tbody.innerHTML = '';
+
+            if (addedItems.length === 0) {
+                tbody.innerHTML = `
+                    <tr class="empty-state">
+                        <td colspan="4">
+                            <i class="fas fa-shopping-cart animate-bounce"></i>
+                            <p>No items added yet</p>
+                        </td>
+                    </tr>
+                `;
+                updateSummary();
+                return;
+            }
+
+            addedItems.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <strong>${item.name}</strong><br>
+                        <small>₹${item.unitPrice} per ${item.selectedUnit}</small>
+                    </td>
+                    <td>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" class="quantity-input" value="${item.quantity}" 
+                                   onchange="setQuantity(${index}, this.value)" min="1">
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <select class="unit-select" onchange="changeUnit(${index}, this.value)">
+                            ${getUnitOptions(item.unit_type, item.selectedUnit)}
+                        </select>
+                    </td>
+                    <td>₹${(item.quantity * item.unitPrice).toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="removeItem(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            updateSummary();
+        }
+
+        function getUnitOptions(baseUnit, selectedUnit) {
+            const unitConversions = {
+                'kg': [{ unit: 'kg', factor: 1 }, { unit: 'g', factor: 1000 }],
+                'l': [{ unit: 'l', factor: 1 }, { unit: 'ml', factor: 1000 }],
+                'mt': [{ unit: 'mt', factor: 1 }, { unit: 'cm', factor: 100 }],
+                'pcs': [{ unit: 'pcs', factor: 1 }]
+            };
+
+            const options = unitConversions[baseUnit] || [{ unit: baseUnit, factor: 1 }];
+            return options.map(option =>
+                `<option value="${option.unit}" ${option.unit === selectedUnit ? 'selected' : ''}>${option.unit}</option>`
+            ).join('');
+        }
+
+        function updateQuantity(index, change) {
+            addedItems[index].quantity = Math.max(1, addedItems[index].quantity + change);
+            updateAddedItemsTable();
+        }
+
+        function setQuantity(index, value) {
+            addedItems[index].quantity = Math.max(1, parseInt(value) || 1);
+            updateAddedItemsTable();
+        }
+
+        function changeUnit(index, newUnit) {
+            const item = addedItems[index];
+            const baseItem = items.find(i => i.id === item.id);
+
+            // Calculate new unit price based on conversion
+            const conversionFactor = getConversionFactor(baseItem.unit_type, newUnit);
+            item.selectedUnit = newUnit;
+            item.unitPrice = baseItem.price / conversionFactor;
+
+            updateAddedItemsTable();
+        }
+
+        function getConversionFactor(baseUnit, targetUnit) {
+            const conversions = {
+                'kg': { 'kg': 1, 'g': 1000 },
+                'l': { 'l': 1, 'ml': 1000 },
+                'mt': { 'mt': 1, 'cm': 100 },
+                'pcs': { 'pcs': 1 }
+            };
+
+            return conversions[baseUnit]?.[targetUnit] || 1;
+        }
+
+        function removeItem(index) {
+            addedItems.splice(index, 1);
+            updateAddedItemsTable();
+            showNotification('Item removed successfully!', 'success');
+        }
+
+        function updateSummary() {
+            const totalItems = addedItems.reduce((sum, item) => sum + item.quantity, 0);
+            const subtotal = addedItems.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            const grandTotal = Math.max(0, subtotal - discount);
+
+            document.getElementById('total-items').textContent = totalItems;
+            document.getElementById('sub-total').textContent = subtotal.toFixed(2);
+            document.getElementById('discount-amount').textContent = discount.toFixed(2);
+            document.getElementById('grand-total').textContent = grandTotal.toFixed(2);
+        }
+
+        function generateInvoice() {
+            const customerName = document.getElementById('customer-name').value;
+            const customerPhone = document.getElementById('customer-phone').value;
+
+            if (!customerName || !customerPhone) {
+                showNotification('Please fill in customer details!', 'error');
+                return;
+            }
+
+            if (addedItems.length === 0) {
+                showNotification('Please add some items to the bill!', 'error');
+                return;
+            }
+
+            showNotification('Invoice generated successfully!', 'success');
+
+            // Here you would typically send the data to your backend
+            console.log('Invoice Data:', {
+                customer: { name: customerName, phone: customerPhone },
+                items: addedItems,
+                summary: {
+                    totalItems: document.getElementById('total-items').textContent,
+                    subtotal: document.getElementById('sub-total').textContent,
+                    discount: document.getElementById('discount-amount').textContent,
+                    grandTotal: document.getElementById('grand-total').textContent
+                }
+            });
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>

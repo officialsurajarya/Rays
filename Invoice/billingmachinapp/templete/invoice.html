@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            /* background: white;
+            padding: 20px;
+            border-radius: 10px; */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(to right, #002147, #6a11cb);
+            color: white;
+            /* padding: 20px;
+            border-radius: 10px 10px 0 0; */
+        }
+
+        .table th {
+            background-color: #6a11cb;
+            color: white;
+        }
+
+        .table td {
+            background-color: rgba(211, 211, 211, 0.411);
+        }
+
+        .table {
+            border-collapse: separate;
+            border-spacing: 0 15px;
+        }
+
+        .footer {
+            background: linear-gradient(to right, #002147, #6a11cb);
+            color: white;
+            /* padding: 10px;
+            text-align: center;
+            border-radius: 0 0 10px 10px; */
+        }
+
+        @media print {
+            #printButton {
+                display: none;
+            }
+        }
+    </style>
+    <script>
+        function printInvoice() {
+            window.print();
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container my-5 d-flex flex-column align-items-center">
+        <div class="invoice-container p-2 bg-white rounded-3">
+            <div class="header text-center py-1 rounded-5">
+                <h2>INVOICE</h2>
+            </div>
+            <div class="mx-2">
+                <div class="mt-3 mx-4 d-flex justify-content-between">
+                    <div>
+                        <p class="m-0"><strong>Invoice to:</strong></p>
+                        <p class="m-0"><strong>Dwyane Clark</strong><br></p>
+                        <p class="m-0"><strong>87334532453</strong><br></p>
+
+                    </div>
+                    <div>
+                        <p class="m-0"><strong>Invoice#:</strong> 52148</p>
+                        <p class="m-0"><strong>Date:</strong> 01/02/2020</p>
+                        <p class="mb-0"><strong>GSTIN:</strong> 9989893433</p>
+
+                    </div>
+                </div>
+                <table class="table text-center">
+                    <thead>
+                        <tr>
+                            <th class="rounded-start-5">SL.</th>
+                            <th>Item Description</th>
+                            <th>Price</th>
+                            <th>Qty.</th>
+                            <th class="rounded-end-5">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="rounded-start-5">1</td>
+                            <td>Lorem Ipsum Dolor</td>
+                            <td>$50.00</td>
+                            <td>1</td>
+                            <td class="rounded-end-5">$50.00</td>
+                        </tr>
+                        <tr>
+                            <td class="rounded-start-5">2</td>
+                            <td>Pellentesque id neque ligula</td>
+                            <td>$20.00</td>
+                            <td>3</td>
+                            <td class="rounded-end-5">$60.00</td>
+                        </tr>
+                        <tr>
+                            <td class="rounded-start-5">3</td>
+                            <td>Interdum et malesuada fames</td>
+                            <td>$10.00</td>
+                            <td>2</td>
+                            <td class="rounded-end-5">$20.00</td>
+                        </tr>
+                        <tr>
+                            <td class="rounded-start-5">4</td>
+                            <td>Vivamus volutpat faucibus</td>
+                            <td>$90.00</td>
+                            <td>1</td>
+                            <td class="rounded-end-5">$90.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-between mt-3 ms-4">
+                    <div>
+                        <h5>Payment Info:</h5>
+                        <p>Account #: 1234 5678 9012</p>
+                        <p>A/C Name: Lorem Ipsum</p>
+                        <p>Bank Details: Add your bank details</p>
+                    </div>
+                    <div class="me-2 bg-dark-subtle py-2 rounded-4">
+                        <div class="mx-4">
+                        <h4 style="color: #6a11cb;">Summary:</h4>
+                        <div class="d-flex">
+                            <label for="subtotal" class="fw-bold text-primary">SUB TOTAL:</label><p class="m-0"> $220.00</p>
+                        </div>
+                        <div class="d-flex">
+                            <label for="tax" class="fw-bold text-primary">TAX:</label><p class="m-0"> 0.00%</p>
+                        </div>
+                        <div class="d-flex">
+                            <label for="tax" class="fw-bold text-primary">DISCOUNT:</label><p class="mb-1"> 0.00</p>
+                        </div>
+                        </div>
+                        <div style="width: 100%;height: 1px;background-color: rgb(35, 33, 158);"></div>
+                        <div class="mx-4 mt-2 d-flex">
+                            <h5 class="fw-bold text-primary">Total:</h5><p> $220.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <h5>Terms & Conditions</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dignissim pretium consectetur.</p>
+                </div>
+                <!-- <div class="text-end">
+                    <p>Authorized Sign:</p>
+                    <p>_________________</p>
+                </div> -->
+                <div class="footer d-flex align-items-center justify-content-center py-2 rounded-5">
+                    <p class="m-0">Thank you for your business</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <button id="printButton" class="btn btn-primary" onclick="printInvoice()">Print Invoice</button>
+        </div>
+    </div>
+</body>
+
+</html>

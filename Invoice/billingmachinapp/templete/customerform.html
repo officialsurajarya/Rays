@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-bg: #0f0f23;
+      --secondary-bg: #1a1a2e;
+      --accent-bg: #16213e;
+      --card-bg: #1e1e2e;
+      --text-primary: #ffffff;
+      --text-secondary: #b8b8b8;
+      --accent-color: #00d4ff;
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --warning-color: #f59e0b;
+      --border-color: #374151;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-accent: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+    }
+
+    html {
+      font-size: 10px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--primary-bg);
+      color: var(--text-primary);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+      animation: floatBg 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes floatBg {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-20px) rotate(180deg);
+      }
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 270px;
+      background: var(--secondary-bg);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid var(--border-color);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      padding: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .logo i {
+      font-size: 2.5rem;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-toggle {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      display: none;
+    }
+
+    .btn-toggle {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-toggle:hover {
+      color: var(--accent-color);
+      background: rgba(0, 212, 255, 0.1);
+    }
+
+    .sidebar-content {
+      padding: 2rem 0;
+    }
+
+    .nav {
+      list-style: none;
+      padding: 0;
+    }
+
+    .nav-item {
+      margin-bottom: 0.5rem;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem 2rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 1.4rem;
+      transition: all 0.3s ease;
+      border-radius: 0 2rem 2rem 0;
+      margin-right: 2rem;
+      position: relative;
+    }
+
+    .nav-item a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 100%;
+      background: var(--gradient-accent);
+      transition: width 0.3s ease;
+      border-radius: 0 2rem 2rem 0;
+      z-index: -1;
+    }
+
+    .nav-item a:hover,
+    .nav-item.active a {
+      color: var(--text-primary);
+      background: rgba(0, 212, 255, 0.1);
+      transform: translateX(1rem);
+    }
+
+    .nav-item a:hover::before,
+    .nav-item.active a::before {
+      width: 0.4rem;
+    }
+
+    .nav-item i {
+      font-size: 1.6rem;
+      width: 2rem;
+      text-align: center;
+    }
+
+    .nav-section {
+      margin: 3rem 0 1.5rem;
+      padding: 0 2rem;
+    }
+
+    .nav-section h4 {
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1rem;
+    }
+
+    /* Main Panel */
+    .main-panel {
+      margin-left: 270px;
+      min-height: 100vh;
+      background: var(--primary-bg);
+      transition: margin-left 0.3s ease;
+    }
+
+    .main-header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 270px;
+      height: 8rem;
+      background: var(--secondary-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 999;
+      transition: left 0.3s ease;
+    }
+
+    .navbar {
+      height: 100%;
+      padding: 0 3rem;
+      float: right;
+    }
+
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-left: auto;
+    }
+
+    .navbar-nav li {
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      font-size: 1.6rem;
+      padding: 1rem;
+      border-radius: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--accent-color);
+      background: rgba(0, 212, 255, 0.1);
+      transform: translateY(-0.2rem);
+    }
+
+    .notification {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: var(--danger-color);
+      color: white;
+      border-radius: 50%;
+      width: 1.8rem;
+      height: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 600;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    .profile-pic {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .profile-pic:hover {
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--text-primary);
+    }
+
+    .avatar-sm {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--accent-color);
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-username {
+      font-size: 1.4rem;
+    }
+
+    .fw-bold {
+      font-weight: 700;
+    }
+
+    .op-7 {
+      opacity: 0.7;
+    }
+
+    /* Container and Content */
+    .container {
+      margin-top: 10rem;
+      padding: 3rem;
+      max-width: 120rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .heading {
+      background: var(--gradient-primary);
+      border-radius: 2rem;
+      padding: 3rem;
+      margin-bottom: 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .heading::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .heading h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 2rem;
+      padding: 3rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-0.5rem);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 0.4rem;
+      background: var(--gradient-accent);
+    }
+
+    .card-title {
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .card-title i {
+      color: var(--accent-color);
+      font-size: 2rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      position: absolute;
+      top: -1rem;
+      left: 2rem;
+      background: var(--card-bg);
+      padding: 0 1rem;
+      color: var(--text-secondary);
+      font-size: 1.4rem;
+      font-weight: 500;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .form-label.required::before {
+      content: '*';
+      color: var(--danger-color);
+      margin-right: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 2rem;
+      border: 2px solid var(--border-color);
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      font-size: 1.6rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 0.3rem rgba(0, 212, 255, 0.1);
+      transform: translateY(-0.2rem);
+    }
+
+    .form-input:focus+.form-label {
+      color: var(--accent-color);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    textarea.form-input {
+      min-height: 12rem;
+      resize: vertical;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 4rem;
+    }
+
+    .btn {
+      padding: 1.5rem 3rem;
+      border: none;
+      border-radius: 1.5rem;
+      font-size: 1.6rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 0.1rem;
+      min-width: 15rem;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: var(--gradient-accent);
+      color: white;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-0.3rem);
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+      color: white;
+      box-shadow: 0 0 20px rgba(107, 114, 128, 0.3);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-0.3rem);
+      box-shadow: 0 10px 30px rgba(107, 114, 128, 0.4);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-0.3rem);
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .main-panel {
+        margin-left: 0;
+      }
+
+      .main-header {
+        left: 0;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .container {
+        padding: 2rem;
+        margin-top: 8rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .heading h1 {
+        font-size: 2.5rem;
+      }
+
+      .form-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 25rem;
+      }
+    }
+
+    /* Loading Animation */
+    .loading {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loading::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% {
+        left: -100%;
+      }
+
+      100% {
+        left: 100%;
+      }
+    }
+
+    /* Success/Error Messages */
+    .message {
+      padding: 1.5rem 2rem;
+      border-radius: 1rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+
+    .message.success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--success-color);
+      color: var(--success-color);
+    }
+
+    .message.error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--danger-color);
+      color: var(--danger-color);
+    }
+
+    /* Dropdown Styles */
+    .dropdown-menu {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .dropdown-item {
+      color: var(--text-secondary);
+      padding: 1rem 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--text-primary);
+    }
+
+    /* Scrollbar Styles */
+    ::-webkit-scrollbar {
+      width: 0.8rem;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--secondary-bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-color);
+      border-radius: 0.4rem;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0099cc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <a href="#" class="logo">
+          <i class="fas fa-cube"></i>
+          <span>KaiAdmin</span>
+        </a>
+        <div class="nav-toggle">
+          <button class="btn-toggle toggle-sidebar">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+      <div class="sidebar-content">
+        <ul class="nav">
+          <li class="nav-item active">
+            <a href="#dashboard">
+              <i class="fas fa-home"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-section">
+            <h4>Components</h4>
+          </li>
+          <li class="nav-item">
+            <a href="#stock">
+              <i class="fas fa-chart-line"></i>
+              <span>Stock Inventory</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#bill">
+              <i class="fas fa-rocket"></i>
+              <span>Generate Bill</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#customer">
+              <i class="fas fa-smile"></i>
+              <span>Customer Bill</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#bahi">
+              <i class="fas fa-credit-card"></i>
+              <span>Bahi Khata</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#quotation">
+              <i class="fas fa-file-invoice-dollar"></i>
+              <span>Quotation</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#shops">
+              <i class="fas fa-store"></i>
+              <span>Shop List</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#category">
+              <i class="fas fa-tags"></i>
+              <span>Category</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#purchase">
+              <i class="fas fa-history"></i>
+              <span>Purchase History</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Panel -->
+    <div class="main-panel">
+      <div class="main-header">
+        <nav class="navbar">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#messages">
+                <i class="fas fa-envelope"></i>
+                <span class="notification">3</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#notifications">
+                <i class="fas fa-bell"></i>
+                <span class="notification">4</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#quick-actions">
+                <i class="fas fa-layer-group"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="profile-pic" href="#profile">
+                <div class="avatar-sm">
+                  <img
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                    alt="Profile" class="avatar-img" />
+                </div>
+                <span class="profile-username">
+                  <span class="op-7">Hi,</span>
+                  <span class="fw-bold">Admin</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Content -->
+      <div class="container">
+        <div class="heading">
+          <h1><i class="fas fa-users"></i> Customer Management</h1>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <i class="fas fa-user-plus"></i>
+            Add New Customer
+          </div>
+
+          <form id="customerForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <input type="text" class="form-input" id="name" name="name" placeholder="Enter full name" required>
+                <label for="name" class="form-label required">Full Name</label>
+              </div>
+
+              <div class="form-group">
+                <input type="tel" class="form-input" id="phone" name="phone" placeholder="Enter phone number" required>
+                <label for="phone" class="form-label required">Phone Number</label>
+              </div>
+
+              <div class="form-group">
+                <input type="email" class="form-input" id="email" name="email" placeholder="Enter email address"
+                  required>
+                <label for="email" class="form-label required">Email Address</label>
+              </div>
+
+              <div class="form-group">
+                <input type="text" class="form-input" id="gst" name="gst" placeholder="Enter GST number">
+                <label for="gst" class="form-label">GST Number</label>
+              </div>
+
+              <div class="form-group full-width">
+                <textarea class="form-input" id="address" name="address" placeholder="Enter complete address" rows="4"
+                  required></textarea>
+                <label for="address" class="form-label required">Address</label>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Save Customer
+              </button>
+              <button type="button" class="btn btn-secondary" id="previewBtn">
+                <i class="fas fa-eye"></i> Preview
+              </button>
+              <button type="reset" class="btn btn-danger">
+                <i class="fas fa-undo"></i> Reset Form
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mobile sidebar toggle
+    document.querySelector('.toggle-sidebar').addEventListener('click', function () {
+      document.querySelector('.sidebar').classList.toggle('active');
+    });
+
+    // Form validation and submission
+    document.getElementById('customerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (!validateForm()) {
+        return;
+      }
+
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+
+      // Add loading state
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      submitBtn.disabled = true;
+
+      // Simulate API call
+      setTimeout(() => {
+        // Show success message
+        showMessage('Customer added successfully!', 'success');
+
+        // Reset form
+        this.reset();
+        clearFormValidation();
+
+        // Reset button
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+
+        console.log('Customer data:', data);
+      }, 2000);
+    });
+
+    // Form validation function
+    function validateForm() {
+      const form = document.getElementById('customerForm');
+      const inputs = form.querySelectorAll('.form-input[required]');
+      let isValid = true;
+
+      inputs.forEach(input => {
+        if (!input.value.trim()) {
+          markFieldInvalid(input);
+          isValid = false;
+        } else {
+          markFieldValid(input);
+        }
+      });
+
+      // Email validation
+      const emailInput = document.getElementById('email');
+      if (emailInput.value && !isValidEmail(emailInput.value)) {
+        markFieldInvalid(emailInput);
+        isValid = false;
+      }
+
+      // Phone validation
+      const phoneInput = document.getElementById('phone');
+      if (phoneInput.value && !isValidPhone(phoneInput.value)) {
+        markFieldInvalid(phoneInput);
+        isValid = false;
+      }
+
+      if (!isValid) {
+        showMessage('Please fill in all required fields correctly.', 'error');
+      }
+
+      return isValid;
+    }
+
+    // Field validation helpers
+    function markFieldInvalid(input) {
+      input.classList.add('invalid');
+      input.classList.remove('valid');
+      input.parentElement.classList.add('error');
+    }
+
+    function markFieldValid(input) {
+      input.classList.add('valid');
+      input.classList.remove('invalid');
+      input.parentElement.classList.remove('error');
+    }
+
+    function clearFormValidation() {
+      const inputs = document.querySelectorAll('.form-input');
+      inputs.forEach(input => {
+        input.classList.remove('valid', 'invalid');
+        input.parentElement.classList.remove('error');
+      });
+    }
+
+    // Email validation
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // Phone validation
+    function isValidPhone(phone) {
+      const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+      return phoneRegex.test(phone.replace(/\s/g, ''));
+    }
+
+    // Preview functionality
+    document.getElementById('previewBtn').addEventListener('click', function () {
+      const form = document.getElementById('customerForm');
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+
+      let preview = 'Customer Preview:\n\n';
+      const fieldNames = {
+        'name': 'Full Name',
+        'phone': 'Phone Number',
+        'email': 'Email Address',
+        'gst': 'GST Number',
+        'address': 'Address'
+      };
+
+      for (const [key, value] of Object.entries(data)) {
+        if (value) {
+          preview += `${fieldNames[key] || key}: ${value}\n`;
+        }
+      }
+
+      if (preview === 'Customer Preview:\n\n') {
+        preview = 'No data entered yet.';
+      }
+
+      alert(preview);
+    });
+
+    // Show message function
+    function showMessage(text, type) {
+      // Remove existing messages
+      const existingMessage = document.querySelector('.message');
+      if (existingMessage) {
+        existingMessage.remove();
+      }
+
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type}`;
+      messageDiv.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+        <span>${text}</span>
+    `;
+
+      const container = document.querySelector('.container');
+      container.insertBefore(messageDiv, container.firstChild);
+
+      setTimeout(() => {
+        messageDiv.remove();
+      }, 5000);
+    }
+
+    // Form input animations and real-time validation
+    document.querySelectorAll('.form-input').forEach(input => {
+      input.addEventListener('focus', function () {
+        this.parentElement.classList.add('focused');
+      });
+
+      input.addEventListener('blur', function () {
+        if (!this.value) {
+          this.parentElement.classList.remove('focused');
+        }
+
+        // Real-time validation on blur
+        if (this.hasAttribute('required') && !this.value.trim()) {
+          markFieldInvalid(this);
+        } else if (this.id === 'email' && this.value && !isValidEmail(this.value)) {
+          markFieldInvalid(this);
+        } else if (this.id === 'phone' && this.value && !isValidPhone(this.value)) {
+          markFieldInvalid(this);
+        } else {
+          markFieldValid(this);
+        }
+      });
+
+      // Real-time validation on input
+      input.addEventListener('input', function () {
+        if (this.classList.contains('invalid')) {
+          if (this.id === 'email' && isValidEmail(this.value)) {
+            markFieldValid(this);
+          } else if (this.id === 'phone' && isValidPhone(this.value)) {
+            markFieldValid(this);
+          } else if (this.value.trim()) {
+            markFieldValid(this);
+          }
+        }
+      });
+    });
+
+    // Sidebar navigation
+    document.querySelectorAll('.nav-item a').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // Remove active class from all items
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.classList.remove('active');
+        });
+
+        // Add active class to clicked item
+        this.parentElement.classList.add('active');
+
+        // Add loading effect
+        this.classList.add('loading');
+
+        // Remove loading effect after animation
+        setTimeout(() => {
+          this.classList.remove('loading');
+        }, 1500);
+
+        // Simulate navigation
+        const section = this.getAttribute('href').substring(1);
+        console.log(`Navigating to: ${section}`);
+      });
+    });
+
+    // Phone number formatting
+    document.getElementById('phone').addEventListener('input', function (e) {
+      let value = e.target.value.replace(/\D/g, '');
+
+      // Format as (XXX) XXX-XXXX for US numbers
+      if (value.length >= 6) {
+        value = value.substring(0, 3) + '-' + value.substring(3, 6) + '-' + value.substring(6, 10);
+      } else if (value.length >= 3) {
+        value = value.substring(0, 3) + '-' + value.substring(3);
+      }
+
+      e.target.value = value;
+    });
+
+    // Auto-capitalize name input
+    document.getElementById('name').addEventListener('input', function (e) {
+      e.target.value = e.target.value.replace(/\b\w/g, l => l.toUpperCase());
+    });
+
+    // GST number validation and formatting
+    document.getElementById('gst').addEventListener('input', function (e) {
+      let value = e.target.value.toUpperCase();
+
+      // Remove non-alphanumeric characters
+      value = value.replace(/[^A-Z0-9]/g, '');
+
+      // Limit to 15 characters (GST format)
+      if (value.length > 15) {
+        value = value.substring(0, 15);
+      }
+
+      e.target.value = value;
+    });
+
+    // Auto-save form data to prevent loss
+    let autoSaveInterval;
+    function startAutoSave() {
+      autoSaveInterval = setInterval(() => {
+        const formData = new FormData(document.getElementById('customerForm'));
+        const data = Object.fromEntries(formData);
+
+        // Only save if there's actual data
+        if (Object.values(data).some(value => value.trim())) {
+          try {
+            console.log('Auto-saving form data...', data);
+            // In a real app, this would save to localStorage or send to server
+          } catch (error) {
+            console.error('Auto-save failed:', error);
+          }
+        }
+      }, 30000); // Auto-save every 30 seconds
+    }
+
+    // Stop auto-save
+    function stopAutoSave() {
+      if (autoSaveInterval) {
+        clearInterval(autoSaveInterval);
+      }
+    }
+
+    // Initialize auto-save when user starts typing
+    document.getElementById('customerForm').addEventListener('input', function () {
+      if (!autoSaveInterval) {
+        startAutoSave();
+      }
+    }, { once: true });
+
+    // Clear auto-save on form submit or reset
+    document.getElementById('customerForm').addEventListener('submit', stopAutoSave);
+    document.getElementById('customerForm').addEventListener('reset', function () {
+      stopAutoSave();
+      clearFormValidation();
+
+      // Reset focused states
+      document.querySelectorAll('.form-group').forEach(group => {
+        group.classList.remove('focused');
+      });
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function (e) {
+      // Ctrl+S or Cmd+S to save
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        document.getElementById('customerForm').dispatchEvent(new Event('submit'));
+      }
+
+      // Ctrl+R or Cmd+R to reset (with confirmation)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+        e.preventDefault();
+        if (confirm('Are you sure you want to reset the form?')) {
+          document.getElementById('customerForm').reset();
+        }
+      }
+
+      // Escape to close sidebar on mobile
+      if (e.key === 'Escape') {
+        document.querySelector('.sidebar').classList.remove('active');
+      }
+    });
+
+    // Handle form submission with Enter key in textarea
+    document.getElementById('address').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        document.getElementById('customerForm').dispatchEvent(new Event('submit'));
+      }
+    });
+
+    // Initialize tooltips
+    document.querySelectorAll('[data-tooltip]').forEach(element => {
+      element.classList.add('tooltip');
+    });
+
+    // Smooth scrolling for better UX
+    function smoothScrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Add click outside handler for sidebar on mobile
+    document.addEventListener('click', function (e) {
+      const sidebar = document.querySelector('.sidebar');
+      const toggleBtn = document.querySelector('.toggle-sidebar');
+
+      if (window.innerWidth <= 768 &&
+        !sidebar.contains(e.target) &&
+        !toggleBtn.contains(e.target) &&
+        sidebar.classList.contains('active')) {
+        sidebar.classList.remove('active');
+      }
+    });
+
+    // Initialize form when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      // Focus on first input
+      document.getElementById('name').focus();
+
+      // Check for saved data (in a real app)
+      console.log('Form initialized and ready for input');
+
+      // Add subtle animation to form elements
+      const formElements = document.querySelectorAll('.form-group');
+      formElements.forEach((element, index) => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+
+        setTimeout(() => {
+          element.style.transition = 'all 0.5s ease';
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+    });
+
+    // Export functions for testing (if needed)
+    if (typeof module !== 'undefined' && module.exports) {
+      module.exports = {
+        validateForm,
+        isValidEmail,
+        isValidPhone,
+        showMessage
+      };
+    }
+  </script>
+</body>
+
+</html>

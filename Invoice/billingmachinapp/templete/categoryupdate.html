@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Management - Modern Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #1a1d29;
+            --secondary-dark: #242837;
+            --accent-blue: #2563eb;
+            --accent-light: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        html {
+            font-size: 10px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 1.4rem;
+            line-height: 1.6;
+        }
+
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+
+        .nav-toggle {
+            display: none;
+        }
+
+        .sidebar-nav {
+            padding: 2rem 0;
+        }
+
+        .nav-section {
+            padding: 1rem 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .nav-section h4 {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.2rem 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 0 2rem 2rem 0;
+            margin-right: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item a:hover::before,
+        .nav-item.active a::before {
+            width: 100%;
+        }
+
+        .nav-item a:hover,
+        .nav-item.active a {
+            color: var(--text-primary);
+            transform: translateX(0.5rem);
+        }
+
+        .nav-item i {
+            font-size: 1.6rem;
+            width: 2rem;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-panel {
+            flex: 1;
+            margin-left: 280px;
+            background: var(--primary-dark);
+            transition: all 0.3s ease;
+        }
+
+        .main-header {
+            background: var(--card-bg);
+            padding: 1.5rem 3rem;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .topbar-icon {
+            position: relative;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            background: var(--secondary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .topbar-icon:hover {
+            background: var(--accent-blue);
+            transform: scale(1.1);
+        }
+
+        .notification {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            background: var(--error);
+            color: white;
+            border-radius: 50%;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .profile-pic {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: var(--secondary-dark);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .profile-pic:hover {
+            background: var(--accent-blue);
+        }
+
+        .avatar-sm {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--accent-blue);
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Container Styles */
+        .container {
+            padding: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
+            padding: 3rem;
+            border-radius: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/><circle cx="20" cy="20" r="1" fill="white" opacity="0.1"/><circle cx="80" cy="30" r="1.5" fill="white" opacity="0.1"/></svg>');
+            animation: float 10s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-subtitle {
+            font-size: 1.6rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Card Styles */
+        .form-card {
+            background: var(--card-bg);
+            border-radius: 2rem;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: var(--accent-blue);
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-blue), transparent);
+            margin: 2rem 0 3rem 0;
+            border-radius: 1px;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+        }
+
+        .required {
+            color: var(--error);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1.5rem 2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 1.2rem;
+            background: var(--secondary-dark);
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-textarea {
+            min-height: 12rem;
+            resize: vertical;
+        }
+
+        /* Button Styles */
+        .button-group {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 1.2rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 140px;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-dark);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--error), #dc2626);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        /* Success/Error Messages */
+        .alert {
+            padding: 1.5rem 2rem;
+            border-radius: 1.2rem;
+            margin-bottom: 2rem;
+            border: 1px solid;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-panel {
+                margin-left: 0;
+            }
+
+            .container {
+                padding: 2rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Hover Effects */
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-blue);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-logo">
+                <a href="#" class="logo">
+                    <i class="fas fa-cube"></i>
+                    <span>AdminPanel</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h4>Main</h4>
+                </div>
+                <div class="nav-item active">
+                    <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+                </div>
+                
+                <div class="nav-section">
+                    <h4>Management</h4>
+                </div>
+                <div class="nav-item">
+                    <a href="#"><i class="fas fa-chart-line"></i> Stock Inventory</a>
+                </div>
+                <div class="nav-item">
+                    <a href="#"><i class="fas fa-receipt"></i> Generate Bill</a>
+                </div>
+                <div class="nav-item">
+                    <a href="#"><i class="fas fa-users"></i> Customer Bills</a>
+                </div>
+                <div class="nav-item">
+                    <a href="#"><i class="fas fa-book"></i> Bahi Khata</a>
+                </div>
+                <div class="nav-item">
+                    <a href="#"><i class="fas fa-file-alt"></i> Quotation</a>
+                </div>
+                <div class="nav-item">
+                    <a href="#"><i class="fas fa-store"></i> Shop List</a>
+                </div>
+                <div class="nav-item">
+                    <a href="#"><i class="fas fa-tags"></i> Category</a>
+                </div>
+                <div class="nav-item">
+                    <a href="#"><i class="fas fa-history"></i> Purchase History</a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-panel">
+            <div class="main-header">
+                <nav class="navbar">
+                    <div class="navbar-brand">
+                        <h2 style="color: var(--text-primary); margin: 0;">Category Management</h2>
+                    </div>
+                    <div class="navbar-nav">
+                        <div class="topbar-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="topbar-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="topbar-icon">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification">4</span>
+                        </div>
+                        <div class="profile-pic">
+                            <div class="avatar-sm">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" alt="Profile" class="avatar-img">
+                            </div>
+                            <div>
+                                <div style="font-size: 1.2rem; color: var(--text-muted);">Hi,</div>
+                                <div style="font-weight: 600;">Admin</div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">Category Management</h1>
+                    <p class="page-subtitle">Create and manage product categories</p>
+                </div>
+
+                <div class="alert alert-success" id="successAlert">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="successMessage">Category created successfully!</span>
+                </div>
+
+                <div class="alert alert-error" id="errorAlert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorMessage">Please fill in all required fields.</span>
+                </div>
+
+                <div class="form-card">
+                    <h2 class="section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Basic Details
+                    </h2>
+                    <div class="section-divider"></div>
+
+                    <form id="categoryForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <span class="required">*</span> Category Name
+                                </label>
+                                <input 
+                                    type="text" 
+                                    class="form-input" 
+                                    id="categoryName"
+                                    name="categoryName"
+                                    placeholder="Enter category name"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <span class="required">*</span> Description
+                                </label>
+                                <textarea 
+                                    class="form-input form-textarea" 
+                                    id="description"
+                                    name="description"
+                                    placeholder="Enter category description"
+                                    required
+                                ></textarea>
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="fas fa-save"></i>
+                                <span>Submit</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="refreshBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                <span>Refresh</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form handling
+        const categoryForm = document.getElementById('categoryForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const successAlert = document.getElementById('successAlert');
+        const errorAlert = document.getElementById('errorAlert');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Show alert function
+        function showAlert(type, message) {
+            const alert = type === 'success' ? successAlert : errorAlert;
+            const messageElement = type === 'success' ? successMessage : errorMessage;
+            
+            messageElement.textContent = message;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        // Form submission
+        categoryForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(categoryForm);
+            const categoryName = formData.get('categoryName');
+            const description = formData.get('description');
+
+            if (!categoryName || !description) {
+                showAlert('error', 'Please fill in all required fields.');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.innerHTML = '<div class="loading"></div><span>Submitting...</span>';
+            submitBtn.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                // Reset button
+                submitBtn.innerHTML = '<i class="fas fa-save"></i><span>Submit</span>';
+                submitBtn.disabled = false;
+
+                // Show success message
+                showAlert('success', 'Category created successfully!');
+                
+                // Reset form
+                categoryForm.reset();
+            }, 2000);
+        });
+
+        // Refresh button
+        refreshBtn.addEventListener('click', function() {
+            categoryForm.reset();
+            successAlert.style.display = 'none';
+            errorAlert.style.display = 'none';
+            
+            // Add refresh animation
+            refreshBtn.style.transform = 'rotate(360deg)';
+            setTimeout(() => {
+                refreshBtn.style.transform = 'rotate(0deg)';
+            }, 300);
+        });
+
+        // Input focus effects
+        const inputs = document.querySelectorAll('.form-input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Sidebar navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on load
+            const cards = document.querySelectorAll('.form-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

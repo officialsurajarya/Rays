@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
+            z-index: -1;
+        }
+
+        .sidebar-header {
+            padding: 0 2rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 2rem 0;
+        }
+
+        .nav-item {
+            margin: 0.5rem 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 25px 25px 0;
+            margin-right: 1rem;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-link i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Product Form */
+        .product-form-container {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
+            z-index: -1;
+        }
+
+        .form-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-label:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .submit-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-section {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .form-section:nth-child(1) { animation-delay: 0.1s; }
+        .form-section:nth-child(2) { animation-delay: 0.2s; }
+        .form-section:nth-child(3) { animation-delay: 0.3s; }
+
+        .nav-item {
+            animation: slideInLeft 0.5s ease forwards;
+        }
+
+        .nav-item:nth-child(1) { animation-delay: 0.1s; }
+        .nav-item:nth-child(2) { animation-delay: 0.2s; }
+        .nav-item:nth-child(3) { animation-delay: 0.3s; }
+        .nav-item:nth-child(4) { animation-delay: 0.4s; }
+        .nav-item:nth-child(5) { animation-delay: 0.5s; }
+        .nav-item:nth-child(6) { animation-delay: 0.6s; }
+        .nav-item:nth-child(7) { animation-delay: 0.7s; }
+        .nav-item:nth-child(8) { animation-delay: 0.8s; }
+        .nav-item:nth-child(9) { animation-delay: 0.9s; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: -100%;
+                height: 100vh;
+                z-index: 1000;
+                transition: left 0.3s ease;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .form-sections {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .form-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Mobile menu button */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        /* Success animation */
+        .success-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            display: none;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .success-animation.show {
+            display: block;
+            animation: successPulse 0.5s ease;
+        }
+
+        @keyframes successPulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-gem"></i> Dashboard
+                </div>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Stock Inventory</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-receipt"></i>
+                            <span>Generate Bill</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Customer Bill</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-book"></i>
+                            <span>Bahi Khata</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Quotation</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-store"></i>
+                            <span>Shop List</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-tags"></i>
+                            <span>Category</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-history"></i>
+                            <span>Purchase History</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Add New Product</h1>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <div>Welcome back!</div>
+                        <div><strong>Admin</strong></div>
+                    </div>
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="product-form-container">
+                <h2 class="form-title">
+                    <i class="fas fa-plus-circle"></i>
+                    Product Information
+                </h2>
+
+                <form id="productForm">
+                    <div class="form-sections">
+                        <!-- Product Info Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-box"></i>
+                                Product Details
+                            </h3>
+                            <div class="form-group">
+                                <label class="form-label">Product Title</label>
+                                <input type="text" class="form-input" name="title" placeholder="Enter product title" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Product Image</label>
+                                <div class="file-input-wrapper">
+                                    <input type="file" class="file-input" name="product_image" id="fileInput" accept="image/*">
+                                    <label for="fileInput" class="file-input-label">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        Choose Image
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Shop Name</label>
+                                <input type="text" class="form-input" name="shop" placeholder="Enter shop name" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <input type="text" class="form-input" name="category" placeholder="Enter category" required>
+                            </div>
+                        </div>
+
+                        <!-- Quantity Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-cubes"></i>
+                                Quantity & Details
+                            </h3>
+                            <div class="form-group">
+                                <label class="form-label">Quantity</label>
+                                <input type="number" class="form-input" name="quantity" placeholder="Enter quantity" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Measurement</label>
+                                <input type="text" class="form-input" name="measurement" placeholder="e.g., 1 Box, 1 Piece" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Purchase Date</label>
+                                <input type="date" class="form-input" name="purchase_date" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Buy Price (₹)</label>
+                                <input type="number" class="form-input" name="buy_price" placeholder="Enter buy price" min="0" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <!-- Pricing Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-rupee-sign"></i>
+                                Pricing Details
+                            </h3>
+                            <div class="form-group">
+                                <label class="form-label">Margin Percent (%)</label>
+                                <input type="number" class="form-input" name="margin_percent" placeholder="Enter margin percentage" min="0" max="100" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Sale Price (₹)</label>
+                                <input type="number" class="form-input" name="sale_price" placeholder="Auto-calculated" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Profit Amount (₹)</label>
+                                <input type="number" class="form-input" name="profit_amount" placeholder="Auto-calculated" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-plus"></i>
+                        Add Product to Inventory
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <div class="success-animation" id="successAnimation">
+        <div style="text-align: center;">
+            <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+            <h3>Product Added Successfully!</h3>
+        </div>
+    </div>
+
+    <script>
+        // Toggle sidebar for mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            
+            if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Form functionality
+        const form = document.getElementById('productForm');
+        const buyPriceInput = document.querySelector('input[name="buy_price"]');
+        const marginPercentInput = document.querySelector('input[name="margin_percent"]');
+        const salePriceInput = document.querySelector('input[name="sale_price"]');
+        const profitAmountInput = document.querySelector('input[name="profit_amount"]');
+
+        // Auto-calculate sale price and profit
+        function calculatePrice() {
+            const buyPrice = parseFloat(buyPriceInput.value) || 0;
+            const marginPercent = parseFloat(marginPercentInput.value) || 0;
+            
+            if (buyPrice > 0 && marginPercent >= 0) {
+                const profit = (buyPrice * marginPercent) / 100;
+                const salePrice = buyPrice + profit;
+                
+                salePriceInput.value = salePrice.toFixed(2);
+                profitAmountInput.value = profit.toFixed(2);
+            } else {
+                salePriceInput.value = '';
+                profitAmountInput.value = '';
+            }
+        }
+
+        buyPriceInput.addEventListener('input', calculatePrice);
+        marginPercentInput.addEventListener('input', calculatePrice);
+
+        // File input feedback
+        const fileInput = document.getElementById('fileInput');
+        const fileLabel = document.querySelector('.file-input-label');
+
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                fileLabel.innerHTML = `<i class="fas fa-check"></i> ${e.target.files[0].name}`;
+                fileLabel.style.background = 'rgba(46, 204, 113, 0.2)';
+                fileLabel.style.borderColor = 'rgba(46, 204, 113, 0.5)';
+            } else {
+                fileLabel.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Choose Image';
+                fileLabel.style.background = 'rgba(255, 255, 255, 0.1)';
+                fileLabel.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            }
+        });
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show success animation
+            const successAnimation = document.getElementById('successAnimation');
+            successAnimation.classList.add('show');
+            
+            // Hide success animation after 3 seconds
+            setTimeout(() => {
+                successAnimation.classList.remove('show');
+            }, 3000);
+            
+            // Reset form
+            setTimeout(() => {
+                form.reset();
+                fileLabel.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Choose Image';
+                fileLabel.style.background = 'rgba(255, 255, 255, 0.1)';
+                fileLabel.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            }, 1000);
+        });
+
+        // Navigation active state
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Set current date as default
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelector('input[name="purchase_date"]').value = today;
+
+        // Add floating animation to form sections
+        const formSections = document.querySelectorAll('.form-section');
+        formSections.forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Add ripple effect to buttons
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement('span');
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+            circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+            circle.classList.add('ripple');
+
+            const ripple = button.getElementsByClassName('ripple')[0];
+            if (ripple) {
+                ripple.remove();
+            }
+
+            button.appendChild(circle);
+        }
+
+        const buttons = document.querySelectorAll('.submit-btn');
+        buttons.forEach(button => {
+            button.addEventListener('click', createRipple);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="form-container" style="max-width: 500px;">
+        <h2>Login</h2>
+        <form id="loginForm" onsubmit="return validateLoginForm()">
+            <div class="form-group full-width">
+                <label for="loginUsername">Username <span>*</span></label>
+                <input type="text" id="loginUsername" placeholder="Enter Username" required />
+            </div>
+
+            <div class="form-group full-width">
+                <label for="loginPassword">Password <span>*</span></label>
+                <input type="password" id="loginPassword" placeholder="Enter Password" required />
+                <div class="error" id="loginPasswordError"></div>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit">Login</button>
+                <button type="reset">Reset</button>
+            </div>
+        </form>
+
+        <p style="margin-top: 20px; text-align: center;">
+            Don't have an account? <a href="registration.html">Register Here</a>
+        </p>
+    </div>
+
+    <script>
+        function validateLoginForm() {
+            const username = document.getElementById("loginUsername").value.trim();
+            const password = document.getElementById("loginPassword").value;
+
+            if (username.length < 3) {
+                alert("Username must be at least 3 characters.");
+                return false;
+            }
+
+            if (password.length < 8) {
+                document.getElementById("loginPasswordError").textContent = "Password must be at least 8 characters.";
+                return false;
+            } else {
+                document.getElementById("loginPasswordError").textContent = "";
+            }
+
+            // Simulate login success (replace with backend logic)
+            alert("Login successful (demo)");
+            return false; // prevent default submit
+        }
+    </script>
+</body>
+
+</html>

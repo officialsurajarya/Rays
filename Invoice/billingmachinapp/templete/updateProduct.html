@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+
+{% block extracss %}
+  <style>
+    html {
+      font-size: 10px;
+    }
+    body {
+      background-color: aliceblue;
+    }
+    .mainbox {
+      width: 90%;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 1.8rem;
+    }
+    .heading {
+      width: 100%;
+      height: 6rem;
+      margin-top: 1.5rem;
+      padding-left: 0.5rem;
+      background-color: rgb(28, 28, 64);
+      color: white;
+      font-size: 3rem;
+      border-radius: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .heading p {
+      margin-top: 1rem;
+      margin-left: 1rem;
+    }
+    .heading button {
+      margin: 0.5rem;
+      background-color: white;
+      border-radius: 2.5rem;
+      font-size: 2rem;
+      padding: 1rem;
+      width: 12rem;
+      text-decoration: none;
+    }
+    .heading button a {
+      color: rgb(21, 210, 8);
+    }
+    .child {
+      background-color: white;
+      width: 98%;
+      margin-left: 1.5rem;
+      margin-top: 2rem;
+      padding-top: 0.5rem;
+      padding-bottom: 1rem;
+      position: relative;
+      box-shadow: 0 0 5px grey;
+    }
+    .detail_heading {
+      font-size: 2.2rem;
+      margin-left: 2rem;
+      color:rgb(28, 28, 64);
+    }
+    .child table {
+      width: 100%;
+      padding: 2rem;
+      margin-left: 2rem;
+    }
+    .child table td {
+      position: relative;
+      width: 33%;
+      height: 10rem;
+    }
+    input,textarea{
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    }
+    textarea{
+      width: 95%;
+      height: 60%;
+      border-radius: 1rem;
+      padding-left: 2rem;
+      font-size: 1.8rem;
+      border: 1px solid gray;
+    }
+    input[type="text"],
+    input[type="date"],
+    input[type="datetime-local"],
+    select {
+      width: 90%;
+      height: 60%;
+      border-radius: 1rem;
+      padding-left: 2rem;
+      font-size: 1.8rem;
+      border: 1px solid gray;
+    }
+    label {
+      position: absolute;
+      top: 1rem;
+      left: 2rem;
+      background-color: white;
+    }
+    span {
+      color: red;
+    }
+    .box {
+      width: 85%;
+      height: 40%;
+      border-radius: 1rem;
+      padding-left: 2rem;
+      border: 1px solid grey;
+      padding-top: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .btn {
+      font-size: 2rem;
+      border-radius: 1rem;
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+      color: white;
+      padding: 0.5rem;
+      padding: 10px;
+      border: none;
+    }
+    .btn-green {
+      margin-left: 5%;
+      background-color: green;
+      &:hover{
+        background-color: lightgreen;
+      }
+    }
+    .btn-red {
+      margin-left: 5%;
+      background-color: crimson;
+      &:hover{
+        background-color: red;
+        color: white;
+      }
+    }
+    th {
+      text-align: left;
+    }
+    #leg2 {
+      position: absolute;
+      top: 0.8rem;
+      left: 2rem;
+    }
+    .btn-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+    
+    @media (max-width: 768px) {
+      .child table td {
+        display: block;
+        width: 100%;
+      }
+      #leg2 {
+        top: -1rem;
+      }
+    }
+    .unit_type{
+      .section-heading{
+        position: relative;
+        top: 1.6rem;
+        left: 2rem;
+        background: white;
+        width: fit-content;
+      }
+      .content{
+      border: 1px solid gray;
+      box-shadow: 0 0 2px gray;
+      border-radius: 10px;
+      max-width: fit-content;
+      font-size: 2.2rem;
+      label{
+        font-size: 2.2rem !important;
+        position: relative;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
+    label{
+      font-size: 2.4rem !important;
+    }
+</style>
+{% endblock extracss %}
+
+ {% block content %}
+    <!-- product section start -->
+      <div class="mainbox" style="margin-top: 7rem; scale: 0.90; padding: 15px !important;">
+        <div><a href="/home/"><button class="btn btn-primary my-4 fs-5 rounded-3"><i class="fa-solid fa-circle-left"></i> DASHBOARD</button></a></div>
+        <div class="heading">
+          <p style="margin-left: 45%; font-size: 2.5rem;">Update Product</p>
+        </div>
+        <div class="child">
+          <p class="detail_heading">Basic Details</p>
+          <hr/>
+          <table>
+            <tr>
+              <td colspan="2">
+                <label><span>*</span> Product Name</label><br />
+                <input
+                  type="text"
+                  placeholder="Name"
+                  class="alpha"
+                  id="name"
+                  name="name"
+                /><br /><span></span>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label><span>*</span> Sale Price</label><br />
+                <input
+                  type="text"
+                  placeholder="Sale Price "
+                  class="onlyNum"
+                  id="saleprice"
+                  name="saleprice"
+                /><br /><span></span>
+              </td>
+              </tr>
+              <tr>
+                <td>
+                  <label><span>*</span> Unit</label><br />
+                  <input
+                    type="text"
+                    placeholder="Unit"
+                    class="onlyNum"
+                    id="qty"
+                    name="Quantity"
+                  /><br /><span></span>
+                 </td>
+                <td>
+                  <div class="unit_type mx-5 d-flex flex-column">
+                    <div class="section-heading">Unit Type</div>
+                  <div class="content  px-3 py-4">
+                    <input type="radio" name="unit" id="kg" value="kg"><label for="kg">kg</label>
+                  <input type="radio" name="unit" id="gm" value="gm"><label for="gm">gm</label>
+                  <input type="radio" name="unit" id="mt" value="mt"><label for="mt">mt</label>
+                  <input type="radio" name="unit" id="cm" value="cm"><label for="cm">cm</label>
+                  <input type="radio" name="unit" id="l" value="l"><label for="l">l</label>
+                  <input type="radio" name="unit" id="ml" value="ml"><label for="ml">ml</label>
+                  <input type="radio" name="unit" id="pcs" value="pcs"><label for="pcs">pcs</label>
+                  </div>
+                  </div>
+                </td>
+            </tr>
+          </table>
+          <div class="btn-box">
+            <button type="button" class="btn btn-green" id="smbt">Submit</button>
+            <button  type="button" class="btn btn-red" id="refresh">Refresh</button>
+          </div>
+        </div>
+        </div>
+        {% endblock content %}
+    <!-- product section end -->
+    <!--   Core JS Files   -->
+   
+        {% block extrajs %}
+
+        <script src="{% static "js/form.js" %}"></script>
+        <script>
+    $(document).ready(function () {
+        function getProductIdFromUrl() {
+    const urlParts = window.location.pathname.split('/'); // Split URL by '/'
+    const productId = urlParts[urlParts.length - 2]; // Get the last part (ID)
+    return productId;
+}
+        // Get the product ID
+const productId = getProductIdFromUrl();
+console.log("Product ID:", productId); // Check in console
+        $.ajax({
+            url: `http://192.168.1.33:8081/api/simple-invoice/stock-inventory/detail/${productId}/`,
+            type: 'GET',
+            dataType: 'json',
+            headers: {
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQyOTA5MjMzLCJpYXQiOjE3NDI5MDU2MzMsImp0aSI6IjJkNTQwYTJjMzAxMDRkN2RiNWRmYWEyMGQ4NTczNjc0IiwidXNlcl9pZCI6MX0.c_c6cbccGx3_VQPfvr_q8NdnrERNcB4xE8lF7fOTuXg", // Replace with actual token
+                "Content-Type": "application/json"
+            },
+            success: function (response) {
+                $('#name').val(response.data.product_name);
+                $('#saleprice').val(response.data.sale_price);
+                $('#qty').val(response.data.unit);    
+                $('input[name="unit"]').each(function() {
+                if ($(this).val() === response.data.unit_name) {
+                    $(this).prop('checked', true);
+                    }
+                })    
+            },
+            error:(error)=> {
+                console.error("Error fetching data:", error);
+            }
+        });
+
+        unitType = [
+            {name:'kg',id:'1'},
+            {name:'gm',id:'4'},
+            {name:'cm',id:'3'},
+            {name:'mt',id:'2'},
+            {name:'l',id:'5'},
+            {name:'ml',id:'6'},
+            {name:'pcs',id:'7'},
+        ];
+
+
+          document.getElementById('smbt').addEventListener('click', function() {
+            console.log("Submit button clicked");
+        
+            // Get and trim input values
+            let productName = document.getElementById('name').value.trim();
+            let quantity = document.getElementById('qty').value.trim();
+            let salePrice = document.getElementById('saleprice').value.trim();
+            var selectedUnit = $('input[name="unit"]:checked').val();
+            let pid;
+            for(let i=0;i<unitType.length;i++){
+                if(unitType[i].name === selectedUnit)
+                pid =unitType[i].id;
+            }
+            // Validate fields
+            if (!productName || !quantity || !salePrice) {
+                alert("All fields are required!");
+                return;
+            }
+        
+            if (isNaN(quantity) || isNaN(salePrice)) {
+                alert("Sale Price and Quantity must be numbers!");
+                return;
+            }
+        
+            // Convert data types correctly
+            const shopData = {
+                product_name: productName,
+                unit: String(quantity),  // Ensure integer
+                sale_price: parseFloat(salePrice),  // Ensure float
+                unit_type:parseInt(pid),
+            };
+        
+            console.log("Payload being sent:", JSON.stringify(shopData));  // Debugging
+        
+            // Send API request
+            fetch(`http://192.168.1.33:8081/api/simple-invoice/stock-inventory/edit/${productId}/`, {
+                method: 'POST',
+                headers: {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQyOTA5MjMzLCJpYXQiOjE3NDI5MDU2MzMsImp0aSI6IjJkNTQwYTJjMzAxMDRkN2RiNWRmYWEyMGQ4NTczNjc0IiwidXNlcl9pZCI6MX0.c_c6cbccGx3_VQPfvr_q8NdnrERNcB4xE8lF7fOTuXg",
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(shopData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("API Response:", data);
+                if (data.isSuccess) {
+                    alert("Product updated successfully!");
+                    // document.getElementById("name").value = "";
+                    // document.getElementById("saleprice").value = "";
+                    // document.getElementById("qty").value = "";
+                    window.location.href='/stocklist/'
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to update product. Check console for details.");
+            });
+        });
+
+    });
+
+        
+        </script>
+
+    {% endblock extrajs %}

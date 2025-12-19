@@ -1,0 +1,417 @@
+{% extends "base.html" %}
+
+{% block extracss %}
+  <style>
+   
+    body {
+      background-color: aliceblue;
+    }
+    .mainbox {
+      /* width: 90%; */
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 1.8rem;
+    }
+    .heading {
+      
+      background-color: #0b5394;
+      color: white;
+      border-radius: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    /* .heading button {
+      margin: 0.5rem;
+      background-color: white;
+      border-radius: 2.5rem;
+      font-size: 2rem;
+      padding: 1rem;
+      width: 12rem;
+      text-decoration: none;
+    } */
+    /* .heading button a {
+      color: rgb(21, 210, 8);
+    } */
+    .child {
+      background-color: white;
+      width: 98%;
+      margin-left: 1.5rem;
+      margin-top: 2rem;
+      padding-top: 0.5rem;
+      padding-bottom: 1rem;
+      position: relative;
+      box-shadow: 0 0 5px grey;
+    }
+    .detail_heading {
+      font-size: 2.2rem;
+      margin-left: 2rem;
+      color:rgb(28, 28, 64);
+    }
+    .child table {
+      width: 100%;
+      padding: 2rem;
+      margin-left: 2rem;
+    }
+    .child table td {
+      position: relative;
+      width: 33%;
+      height: 4rem;
+    }
+    input,textarea{
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    }
+    textarea{
+      width: 95%;
+      height: 60%;
+      border-radius: 1rem;
+      padding-left: 2rem;
+      font-size: 1.8rem;
+      border: 1px solid gray;
+    }
+    input[type="text"],
+    input[type="date"],
+    input[type="datetime-local"],
+    select {
+      width: 90%;
+      height: 3.4rem;
+      border-radius: 1rem;
+      padding-left: 2rem;
+      font-size: 1.4rem;
+      border: 1px solid gray;
+    }
+    label {
+      position: absolute;
+      top: 1.2rem;
+      left: 1.6rem;
+      background-color: white;
+      font-size: 1.2rem !important;
+    }
+    span {
+      color: red;
+    }
+    .box {
+      width: 85%;
+      height: 40%;
+      border-radius: 1rem;
+      padding-left: 2rem;
+      border: 1px solid grey;
+      padding-top: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    /* .btn {
+      font-size: 2rem;
+      border-radius: 1rem;
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+      color: white;
+      padding: 0.5rem;
+      padding: 10px;
+      border: none;
+    } */
+    /* .btn-green {
+      margin-left: 5%;
+      background-color: green;
+      &:hover{
+        background-color: lightgreen;
+      }
+    }
+    .btn-red {
+      margin-left: 5%;
+      background-color: crimson;
+      &:hover{
+        background-color: red;
+        color: white;
+      }
+    } */
+    th {
+      text-align: left;
+    }
+    #leg2 {
+      position: absolute;
+      top: 0.8rem;
+      left: 2rem;
+    }
+    .btn-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+    
+    @media (max-width: 768px) {
+      .child table td {
+        display: block;
+        width: 100%;
+      }
+      #leg2 {
+        top: -1rem;
+      }
+    }
+    .unit_type{
+      .section-heading{
+        position: relative;
+        top: 1.6rem;
+        left: 2rem;
+        background: white;
+        width: fit-content;
+      }
+      .content{
+      border: 1px solid gray;
+      box-shadow: 0 0 2px gray;
+      border-radius: 10px;
+      max-width: fit-content;
+      font-size: 2.2rem;
+      label{
+        font-size: 2.2rem !important;
+        position: relative;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
+    .u1{
+      border: 1px solid gray;
+      width: 95%;
+      /* padding-bottom: 2rem; */
+      border-radius: 10px;
+      margin-top: 2rem;
+      padding-left: 1rem;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      #qty{
+        /* height: 5rem; */
+        width: 60%;
+        box-shadow: none;
+      }
+      #unitType{
+        /* height: 5rem; */
+        width: 30%;
+        margin-left: 1rem;
+      }
+    }
+</style>
+{% endblock extracss %}
+
+ {% block content %}
+    <!-- product section start -->
+      <div class="mainbox" style="margin-top: 4rem;scale: 0.98; padding: 15px !important;">
+        <div><a href="/home/"><button class="btn btn-primary my-4 fs-5 rounded-3"><i class="fa-solid fa-circle-left"></i> DASHBOARD</button></a></div>
+        <div class="heading">
+          <h1 style="margin-left: 43%;">Add Product</h1>
+          <a href="/searchProduct/" class="text-white fs-5 btn btn-primary btn-round my-2 me-2">Search Product</a>
+        </div>
+        <div class="child">
+          <h3 class="text-primary ms-3">Basic Details:</h3>
+          <hr/>
+          <table>
+            <tr>
+              <td>
+                <label><span>*</span> Product Name</label><br />
+                <input
+                  type="text"
+                  placeholder="Product Name"
+                  class="alpha"
+                  id="name"
+                  name="name"
+                /><br /><span></span>
+              </td>
+              <td >
+                <label><span>*</span> Product Type</label><br />
+                <input
+                  type="text"
+                  placeholder="Product Type"
+                  class="alpha"
+                  id="name"
+                  name="name"
+                /><br /><span></span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><span>*</span> Purchase Price</label><br />
+                <input
+                  type="text"
+                  placeholder="Sale Price "
+                  class="onlyNum"
+                  id="purchaseprice"
+                  name="purchaseprice"
+                /><br /><span></span>
+              </td>
+              <td>
+                <label><span>*</span> Sale Price</label><br />
+                <input
+                  type="text"
+                  placeholder="Sale Price "
+                  class="onlyNum"
+                  id="saleprice"
+                  name="saleprice"
+                /><br /><span></span>
+              </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <label class="unt"><span>*</span> Unit</label>
+                  <div class="u1 py-3">
+                    
+                  <input
+                    type="text"
+                    placeholder="Unit"
+                    class="onlyNum"
+                    id="qty"
+                    name="Quantity"
+                    
+                  />
+                  <select name="unitType" id="unitType">
+                    <option value="kg">kg</option>
+                    <option value="gm">gm</option>
+                    <option value="cm">cm</option>
+                    <option value="mt">mt</option>
+                    <option value="l">l</option>
+                    <option value="ml">ml</option>
+                    <option value="pcs">pcs</option>
+                  </select>
+                  <br /><span></span>
+                  </div>
+                 </td>
+                <!-- <td>
+                  <div class="unit_type mx-5 d-flex flex-column">
+                    <div class="section-heading">Unit Type</div>
+                  <div class="content  px-3 py-4">
+                    <input type="radio" name="unit" id="kg" value="kg"><label for="kg">kg</label>
+                  <input type="radio" name="unit" id="gm" value="gm"><label for="gm">gm</label>
+                  <input type="radio" name="unit" id="mt" value="mt"><label for="mt">mt</label>
+                  <input type="radio" name="unit" id="cm" value="cm"><label for="cm">cm</label>
+                  <input type="radio" name="unit" id="l" value="l"><label for="l">l</label>
+                  <input type="radio" name="unit" id="ml" value="ml"><label for="ml">ml</label>
+                  <input type="radio" name="unit" id="pcs" value="pcs"><label for="pcs">pcs</label>
+                  </div>
+                  </div>
+                </td> -->
+            </tr>
+          </table>
+          <div class="btn-box">
+            <button type="button" class="btn btn-green btn-round btn-success fs-5 mt-3" id="smbt">Submit</button>
+            <button  type="button" class="btn btn-red btn-round btn-danger fs-5 mt-3" id="refresh">Refresh</button>
+          </div>
+        </div>
+        </div>
+        {% endblock content %}
+    <!-- product section end -->
+    <!--   Core JS Files   -->
+   
+        {% block extrajs %}
+
+        <script src="{ % static "js/form.js" % }"></script>
+        <script>
+          $(document).ready(function(){
+            unitType = [
+            {name:'kg',id:'1'},
+            {name:'gm',id:'4'},
+            {name:'cm',id:'3'},
+            {name:'mt',id:'2'},
+            {name:'l',id:'5'},
+            {name:'ml',id:'6'},
+            {name:'pcs',id:'7'},
+        ];
+
+          document.getElementById('smbt').addEventListener('click', function() {
+            console.log("Submit button clicked");
+        
+            // Get and trim input values
+            let productName = document.getElementById('name').value.trim();
+            let quantity = document.getElementById('qty').value.trim();
+            let salePrice = document.getElementById('saleprice').value.trim();
+            var selectedUnit = $('input[name="unit"]:checked').val();
+            let pid;
+            for(let i=0;i<unitType.length;i++){
+                if(unitType[i].name === selectedUnit)
+                pid =unitType[i].id;
+            }
+        
+            // Validate fields
+            if (!productName || !quantity || !salePrice) {
+                alert("All fields are required!");
+                return;
+            }
+        
+            if (isNaN(quantity) || isNaN(salePrice)) {
+                alert("Sale Price and Quantity must be numbers!");
+                return;
+            }
+        
+            // Convert data types correctly
+            const shopData = {
+                product_name: productName,
+                unit: String(quantity),  // Ensure integer
+                sale_price: parseFloat(salePrice),  // Ensure float
+                unit_type:parseInt(pid)
+            };
+        
+            console.log("Payload being sent:", JSON.stringify(shopData));  // Debugging
+        
+            // Send API request
+            fetch('http://192.168.1.33:8081/api/simple-invoice/stock-inventory/create/', {
+                method: 'POST',
+                headers: {
+                  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQyOTAzODQ1LCJpYXQiOjE3NDI5MDAyNDUsImp0aSI6ImZiYmU2YzYzM2FkNTQzYTdiNjRhMWZlZGQxYjM5OThlIiwidXNlcl9pZCI6MX0.aX1304VjxN9CAUObTGv0evLCxP2BG5Odd61-gUxcG3A", // Replace with actual token
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(shopData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("API Response:", data);
+                if (data.isSuccess) {
+                    alert("Product added successfully!");
+                    document.getElementById("name").value = "";
+                    document.getElementById("saleprice").value = "";
+                    document.getElementById("qty").value = "";
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to add product. Check console for details.");
+            });
+        });
+      })
+
+        {% comment %} document.getElementById('smbt').addEventListener('click', function() {
+          console.log("called")
+            const shopData = {
+              product_name: document.getElementById('name').value,
+              last_enterd_quantity: document.getElementById('qty').value,
+              sale_price: parseInt(document.getElementById('saleprice').value), 
+            };
+            console.log(shopData);
+            // Send the form data to the API to create a new shop
+            fetch('http://192.168.1.33:8081/api/simple-invoice/stock-inventory/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(shopData)
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.isSuccess) {
+                  alert("Product added successfully!");
+                  // Optionally, refresh the product list or clear fields
+                  document.getElementById("name").value = "";
+                  document.getElementById("saleprice").value = "";
+                  document.getElementById("qty").value = "";
+              } else {
+                  alert("Error: " + data.message);
+              }
+          })
+          .catch(error => {
+              console.error("Error:", error);
+              alert("Failed to add product. Please try again.");
+          });
+        }); {% endcomment %}
+
+        
+        </script>
+
+    {% endblock extrajs %}

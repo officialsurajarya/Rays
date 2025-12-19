@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 35px 30px;
+            width: 100%;
+            max-width: 450px;
+            color: #fff;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #eee;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            outline: none;
+        }
+
+        .form-group .error {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
+
+        .forgot-password a {
+            font-size: 0.9rem;
+            color: #86d3ff;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+
+        .register-link a {
+            color: #86d3ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Login</h2>
+        <form id="loginForm" onsubmit="return validateLoginForm()">
+            <div class="form-group">
+                <label for="loginUsername">Username <span style="color: red;">*</span></label>
+                <input type="text" id="loginUsername" placeholder="Enter Username" required />
+            </div>
+
+            <div class="form-group">
+                <label for="loginPassword">Password <span style="color: red;">*</span></label>
+                <input type="password" id="loginPassword" placeholder="Enter Password" required />
+                <div class="error" id="loginPasswordError"></div>
+            </div>
+
+            <div class="forgot-password">
+                <a href="/forgetpassword">Forgot Password?</a>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit">Login</button>
+                <button type="reset">Reset</button>
+            </div>
+        </form>
+
+        <div class="register-link">
+            Don't have an account? <a href="/signup">Register Here</a>
+        </div>
+    </div>
+
+    <script>
+        function validateLoginForm() {
+            const username = document.getElementById("loginUsername").value.trim();
+            const password = document.getElementById("loginPassword").value;
+
+            if (username.length < 3) {
+                alert("Username must be at least 3 characters.");
+                return false;
+            }
+
+            if (password.length < 8) {
+                document.getElementById("loginPasswordError").textContent = "Password must be at least 8 characters.";
+                return false;
+            } else {
+                document.getElementById("loginPasswordError").textContent = "";
+            }
+
+            alert("Login successful (demo)");
+            return false; // prevent form submission
+        }
+    </script>
+</body>
+
+</html>

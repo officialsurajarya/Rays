@@ -1,0 +1,51 @@
+from django.shortcuts import render,HttpResponse
+# Create your views here.
+
+def home(request):
+    return render(request,'index.html')
+def stocklist(request):
+    return render(request,'stocklist.html')
+def stocklistform(request):
+    return render(request,'stocklistform.html')
+def stocklistupdate(request):
+    return render(request,'stocklistupdate.html')
+def addgarments(request):
+    return render(request,'addgarments.html')
+def billingform(request):
+    return render(request,'billingform.html')
+def shoplist(request):
+    return render(request,'shoplist.html')
+def shoplistform(request):
+    return render(request,'shoplistform.html')
+def shoplistupdate(request,id):
+    return render(request,'shoplistupdate.html')
+def category(request):
+    return render(request,'category.html')
+def categoryform(request):
+    return render(request,'categoryform.html')
+def categoryupdate(request):
+    return render(request,'categoryupdate.html')
+def customer(request):
+    return render(request,'customer.html')
+def customerform(request):
+    return render(request,'customerform.html')
+def orderdetails(request):
+    return render(request,'orderdetails.html')
+def orderdetailsform(request):
+    return render(request,'orderdetailsform.html')
+def product(request):
+    return render(request,'product.html')
+def productform(request):
+    return render(request,'productform.html')
+def login(request):
+    return render(request,'login.html')
+def signup(request):
+    return render(request,'signup.html')
+def forgetpassword(request):
+    return render(request,'forgetpassword.html')
+def invoice(request):
+    return render(request,'invoice.html')
+def updateProduct(request,id):
+    return render(request, 'updateProduct.html')
+def searchProduct(request):
+    return render(request,'searchProduct.html')
